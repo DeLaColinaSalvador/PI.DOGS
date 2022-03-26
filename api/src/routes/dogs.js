@@ -4,13 +4,19 @@ const router = Router();
 const {Dog} = require('../db');
 const {Temperament} = require('../models/Temperament');
 const {Op} = require('sequelize');
+const { API_KEY } = process.env
 
 router.get( ("/") , (req,res,next) => {
     let name = req.query.name;
     let DogPromiseApi;
     let DogPromiseDB;
     if (name){
-        DogPromiseApi = axios.get('https://api.thedogapi.com/v1/breeds/search?q=' + name)
+        console.log('back')
+        DogPromiseApi = axios.get('https://api.thedogapi.com/v1/breeds/search?q='+name ,
+            {headers: {
+                "x-api-key" : `${API_KEY}`} 
+            }
+        );
         DogPromiseDB = Dog.findAll({
             include : Temperament,
             where : {
@@ -36,11 +42,9 @@ router.get( ("/") , (req,res,next) => {
                 weight : dog.weight.metric,
                 life_span : dog.life_span,
                 temperaments : dog.temperaments,
-                image : dog.reference_image_id,
+                image : "https://cdn2.thedogapi.com/images/"+dog.reference_image_id+".jpg"
             }
         })
-        console.log(DogApi)
-        console.log(DogApi.data);
         let allDogs = [...FilteredDogApi, ...DogDB]
         res.send(allDogs)
     })
@@ -64,10 +68,6 @@ router.get( ("/:id") , async (req,res,next) => {
     catch(error){
         next(error)
     }
-})
-
-router.delete( ("/") , (req,res,next) => {
-    res.send('delete')
 })
 
 module.exports = router;
