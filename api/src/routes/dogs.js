@@ -2,11 +2,11 @@ const { Router, response } = require('express');
 const axios = require('axios');
 const router = Router();
 const {Dog} = require('../db');
-const {Temperament} = require('../models/Temperament');
+const {Temperament} = require('../db');
 const {Op} = require('sequelize');
 const { API_KEY } = process.env
 
-router.get( ("/") , (req,res,next) => {
+router.get( ("/") , async (req,res,next) => {
     let name = req.query.name;
     let DogPromiseApi;
     let DogPromiseDB;
@@ -17,18 +17,24 @@ router.get( ("/") , (req,res,next) => {
             }
         );
         DogPromiseDB = Dog.findAll({
-            include : Temperament,
+            include: [{
+                model: Temperament
+              }],
             where : {
                 name: {
                     [Op.iLike]: "%" + name + "%"
                 }
             }
             })
+        console.log(DogPromiseDB)
     }
     else {
-        DogPromiseDB = Dog.findAll({
-            include : Temperament
+        DogPromiseDB =  await Dog.findAll({
+            include: [{
+                model: Temperament
+              }],
             })
+        console.log(DogPromiseDB)
         DogPromiseApi = axios.get('https://api.thedogapi.com/v1/breeds');
     }
     Promise.all([DogPromiseApi,DogPromiseDB])
@@ -37,6 +43,11 @@ router.get( ("/") , (req,res,next) => {
         const FilteredDogDB = DogDB.map((dog) => {
             let weight = dog.dataValues.weight.split(" - ")
             let height = dog.dataValues.height.split(" - ")
+            let temperaments = []
+            dog.dataValues.temperaments.map((prop) => {
+                temperaments.push(prop.name)
+            })
+            console.log(temperaments)
             return {
                 id : dog.dataValues.id,
                 name : dog.dataValues.name,
@@ -44,10 +55,9 @@ router.get( ("/") , (req,res,next) => {
                 weightMax : weight[1],
                 heightMin : height[0],
                 heightMax : height[1],
-                temperaments : dog.dataValues.temperament,
+                temperaments : temperaments.join(', ')
             }
         })
-        console.log(FilteredDogDB)
         const FilteredDogApi = DogApi.data.map((dog) => {
             let weight = dog.weight.metric.split(" - ")
             let height = dog.height.metric.split(" - ")

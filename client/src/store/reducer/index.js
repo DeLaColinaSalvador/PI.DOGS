@@ -1,9 +1,10 @@
 import { DESCENDENTE , W_DESCENDENTE } from "../../const/sort";
-import { FETCH_DOGS , SEARCH_DOGS, SORT_NAME, SORT_WEIGHT } from "../actions";
+import { FETCH_DOGS , FETCH_TEMPERAMENTS, SEARCH_DOGS, SORT_NAME, SORT_WEIGHT } from "../actions";
 
 const initialState = {
     dogs: [],
     filteredDogs: [],
+    temperaments: [],
 }
 
 export default function reducer(state = initialState, action) {
@@ -11,7 +12,7 @@ export default function reducer(state = initialState, action) {
         case FETCH_DOGS:
             return{
                 ...state,
-                filteredDogs: action.payload.data
+                filteredDogs: action.payload
             }
         case SEARCH_DOGS:
             return{
@@ -37,46 +38,18 @@ export default function reducer(state = initialState, action) {
                 let numberB = Math.ceil(parseInt(a.weightMax))
                 if (typeof numberA==="number" && typeof numberB==="number" && !(Number.isNaN(numberA)) && !(Number.isNaN(numberB))){
                     a.avgW=Math.ceil((numberB+numberA)/2)
-                    console.log('both')
-                    console.log('max')
-                    console.log(a.weightMax)
-                    console.log('min')
-                    console.log(a.weightMin)
-                    console.log('avg')
-                    console.log(a.avgW)
                     return a
                 } else if ((typeof numberA==="number" && !Number.isNaN(numberA))|| Number.isNaN(numberB)){
                     numberB=numberA;
                     a.avgW=Math.ceil((numberB+numberA)/2);
-                    console.log('Min')
-                    console.log('max')
-                    console.log(a.weightMax)
-                    console.log('min')
-                    console.log(a.weightMin)
-                    console.log('avg')
-                    console.log(a.avgW)
                     return a
                 } else if ((typeof numberB==="number" && !Number.isNaN(numberB))|| Number.isNaN(numberA)){
                     numberA=numberB;
                     a.avgW=Math.ceil((numberB+numberA)/2);
-                    console.log('Max')
-                    console.log('max')
-                    console.log(a.weightMax)
-                    console.log('min')
-                    console.log(a.weightMin)
-                    console.log('avg')
-                    console.log(a.avgW)
                     return a
                 } else {
                     numberB = numberA = 0
                     a.avgW=Math.ceil((numberB+numberA)/2)
-                    console.log('0')
-                    console.log('max')
-                    console.log(a.weightMax)
-                    console.log('min')
-                    console.log(a.weightMin)
-                    console.log('avg')
-                    console.log(a.avgW)
                     return a
                 }
             })
@@ -98,7 +71,11 @@ export default function reducer(state = initialState, action) {
                     ...state,
                     filteredDogs: sortedDogsW.reverse()
             }}
-
+            case FETCH_TEMPERAMENTS:
+                return {
+                    ...state,
+                    temperaments: action.payload
+                }
         default: return state
     }
 }

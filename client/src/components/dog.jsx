@@ -1,12 +1,13 @@
 import s from '../styles/dog.module.css'
+import {Link} from 'react-router-dom'
 
-export default function Dog({dog}){
+export default function Dog({id, name, image , temperaments , weightMin , weightMax}){
     return <div>
-        <h3>{dog.name}</h3>
-            <img className={s.image} src={dog.image} alt='imagen'/>
-            <ul>
-                <li>Peso : {dog.weightMin}kg - {dog.weightMax}kg</li>
-                <li>Temperamento : {dog.temperaments}</li>
-            </ul>
+                <h3><Link to={'/detail/'+id}>{name}</Link></h3>
+                <img className={s.image} src={image} alt='imagen'/>
+                <ul>
+                    <li>Peso : {weightMin}kg - {weightMax}kg</li>
+                    <li>Temperamento : {temperaments}</li>
+                </ul>
     </div>
 }

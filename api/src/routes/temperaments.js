@@ -24,7 +24,11 @@ router.get( ("/") , async (req,res,next) => {
             }
 
         })
-        let Temperaments = await Temperament.findAll({})
+        let Temperaments = await Temperament.findAll({
+            order :[
+                ['name','ASC']
+            ]
+        })
         res.send(Temperaments)
     }
     catch(error){
