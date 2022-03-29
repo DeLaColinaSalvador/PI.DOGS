@@ -1,0 +1,7 @@
+export const ASCENDENTE = 'ASCENDENTE';
+
+export const DESCENDENTE = 'DESCENDENTE';
+
+export const W_ASCENDENTE = 'W_ASCENDENTE';
+
+export const W_DESCENDENTE = 'W_DESCENDENTE';

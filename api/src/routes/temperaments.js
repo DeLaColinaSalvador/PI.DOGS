@@ -1,35 +1,36 @@
 const { Router } = require('express');
 const {Temperament} = require('../db');
+const axios = require('axios');
 
 const router = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-router.get( ("/") , (req,res,next) => {
+router.get( ("/") , async (req,res,next) => {
     try{
-        return Temperament.findAll()
-        .then((temperaments) => {
-            res.send(temperaments)}
-        )}
+        let apiresponse =  await axios.get("https://api.thedogapi.com/v1/breeds")
+        apiresponse.data.map((dog)=>{
+            if (dog.temperament) {
+                let Temperaments = dog.temperament.split(', ')
+                Temperaments.map(async (element) => {
+                    const [newTemperament, created] = await Temperament.findOrCreate({
+                        where : { name : element},
+                        defaults: {
+                            name : element
+                        }
+                    })
+                })
+            }
+
+        })
+        let Temperaments = await Temperament.findAll({})
+        res.send(Temperaments)
+    }
     catch(error){
         next(error)
     }   
 })
 
-
-
-router.post( "/" , async (req,res,next) => {
-    try {
-        const {name} = req.body;
-        const newTemperament = await Temperament.create({
-         name,
-        })
-        res.status(201).send(newTemperament)
-    }
-    catch (error){
-        next(error)
-    }
-})
 
 module.exports = router;

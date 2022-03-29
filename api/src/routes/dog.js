@@ -7,7 +7,9 @@ const {Dog} = require('../db.js')
 const router = Router();
 
 router.post( "/" , async (req,res,next) => {
-        const {name , height , weight , life_span} = req.body;
+        const {name  , life_span} = req.body;
+        const weight = req.body.weightMin + " - " + req.body.weightMax
+        const height = req.body.heightMin + " - " + req.body.heightMax
         const newBreed = await Dog.create({
             name,
             height,

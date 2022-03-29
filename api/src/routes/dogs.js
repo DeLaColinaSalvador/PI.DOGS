@@ -1,4 +1,4 @@
-const { Router } = require('express');
+const { Router, response } = require('express');
 const axios = require('axios');
 const router = Router();
 const {Dog} = require('../db');
@@ -11,7 +11,6 @@ router.get( ("/") , (req,res,next) => {
     let DogPromiseApi;
     let DogPromiseDB;
     if (name){
-        console.log('back')
         DogPromiseApi = axios.get('https://api.thedogapi.com/v1/breeds/search?q='+name ,
             {headers: {
                 "x-api-key" : `${API_KEY}`} 
@@ -35,17 +34,35 @@ router.get( ("/") , (req,res,next) => {
     Promise.all([DogPromiseApi,DogPromiseDB])
     .then((info) => {
         const [DogApi, DogDB] = info;
-        const FilteredDogApi = DogApi.data.map((dog) => {
+        const FilteredDogDB = DogDB.map((dog) => {
+            let weight = dog.dataValues.weight.split(" - ")
+            let height = dog.dataValues.height.split(" - ")
             return {
+                id : dog.dataValues.id,
+                name : dog.dataValues.name,
+                weightMin : weight[0],
+                weightMax : weight[1],
+                heightMin : height[0],
+                heightMax : height[1],
+                temperaments : dog.dataValues.temperament,
+            }
+        })
+        console.log(FilteredDogDB)
+        const FilteredDogApi = DogApi.data.map((dog) => {
+            let weight = dog.weight.metric.split(" - ")
+            let height = dog.height.metric.split(" - ")
+            return {
+                id : dog.id,
                 name : dog.name,
-                height : dog.height.metric,
-                weight : dog.weight.metric,
-                life_span : dog.life_span,
-                temperaments : dog.temperaments,
+                weightMin : weight[0],
+                weightMax : weight[1],
+                heightMin : height[0],
+                heightMax : height[1],
+                temperaments : dog.temperament,
                 image : "https://cdn2.thedogapi.com/images/"+dog.reference_image_id+".jpg"
             }
         })
-        let allDogs = [...FilteredDogApi, ...DogDB]
+        let allDogs = [...FilteredDogApi, ...FilteredDogDB]
         res.send(allDogs)
     })
     .catch(error => next (error))
@@ -53,15 +70,44 @@ router.get( ("/") , (req,res,next) => {
 
 
 router.get( ("/:id") , async (req,res,next) => {
-    let DogID = req.params.id;
+    let {id} = req.params;
     const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
     let dog;
     try{
-        if (regexExp.test(DogID)){
-            dog = await Dog.findByPk(DogID);
-            
+        if (regexExp.test(id)){
+            dog = await Dog.findByPk(id);
+            let weight = dog.dataValues.weight.split(" - ")
+            let height = dog.dataValues.height.split(" - ")
+            let filteredDogInfo = {
+                    id : dog.dataValues.id,
+                    name : dog.dataValues.name,
+                    weightMin : weight[0],
+                    weightMax : weight[1],
+                    heightMin : height[0],
+                    heightMax : height[1],
+                    temperaments : dog.dataValues.temperament,
+                    life_span : dog.dataValues.life_span,
+                }
+            console.log(filteredDogInfo);
+            dog = filteredDogInfo;
         } else {
-            dog =  await axios.get("https://api.thedogapi.com/v1/breeds/search?q="+DogID)
+            let apiresponse =  await axios.get("https://api.thedogapi.com/v1/breeds")
+            console.log(apiresponse);
+            dog = apiresponse.data.find((element) => {return element.id == id});
+            console.log(dog)
+            let weight = dog.weight.metric.split(" - ")
+            let height = dog.height.metric.split(" - ")
+            let filteredDogInfo = {
+                name : dog.name,
+                weightMin : weight[0],
+                weightMax : weight[1],
+                heightMin : height[0],
+                heightMax : height[1],
+                temperaments : dog.temperament,
+                life_span : dog.life_span,
+                image : "https://cdn2.thedogapi.com/images/"+dog.reference_image_id+".jpg"
+            }
+            dog = filteredDogInfo
         }
         return res.send(dog);
     }

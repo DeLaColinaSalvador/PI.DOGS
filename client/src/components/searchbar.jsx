@@ -3,18 +3,19 @@ import { useDispatch } from "react-redux";
 import { SearchDog } from "../store/actions";
 
 
-export default function SearchBar (){
+export default function SearchBar (props){
     const [search, setSearch] = useState('')
     let dispatch = useDispatch()
-
     function onSubmit(e){
         e.preventDefault();
-        dispatch(SearchDog(search))
+        dispatch(SearchDog(search));
+        props.searched.current = true;
+        console.log('searched')
     }
 
     function onInputChange(e){
-        e.preventDefault()
         setSearch(e.target.value)
+        e.preventDefault()
     }
 
     return <div>

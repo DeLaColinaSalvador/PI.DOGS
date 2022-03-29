@@ -1,8 +1,24 @@
-import React from "react";
-import Dog from "./dog.jsx";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import React, { useRef } from "react";
+import SearchBar from "./searchbar.jsx";
+import Dogs from "./dogs.jsx";
+import Order from "./order.jsx";
+import { useDispatch } from "react-redux";
+import { fetchDogs } from "../store/actions/index.js";
+import { useEffect } from "react";
 
 export default function Home (){
-    return displayDogs()
+
+    const searched = useRef(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchDogs());
+    }, [])
+
+    return  <div>
+                <SearchBar searched={searched}/>
+                <Order searched={searched}/>
+                <Dogs searched={searched} />
+            </div>
+    
 }
