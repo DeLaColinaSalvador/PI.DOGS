@@ -1,0 +1,19 @@
+.mainDiv{
+    background-image: url('https://i.pinimg.com/474x/d0/85/ac/d085ac698513adc2a10bd35ddc498ed1.jpg') ;
+    background-size: cover;
+    align-items: center;
+    justify-content: space-around;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.landing{
+    justify-self: center;
+}
+
+.landing:hover{
+    cursor: pointer;
+    color:blue;
+}

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDogs, FetchTemperaments } from "../store/actions/index.js";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import s from '../styles/home.module.css'
 
 export default function Home (){
     
@@ -30,14 +31,17 @@ export default function Home (){
     }, [dispatch])
 
     return  <div>
-                <Link to='/add'>Añadir</Link>
-                <SearchBar 
-                    paginado={paginado}
-                />
+                <div className={s.header}>
+                    <Link className={s.link} to='/add'>Añadir</Link>
+                    <SearchBar 
+                        className={s.searchBar}
+                        paginado={paginado}
+                    />
+                </div>
                 <Order 
                     paginado={paginado}
                 />
-                <Dogs 
+                <Dogs className={s.dogs}
                     currentDogs={currentDogs}
                 />
                 <Paginado 

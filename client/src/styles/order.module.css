@@ -1,0 +1,10 @@
+.select{
+    background-color: white;
+}
+.select:active{
+    outline: blue;
+}
+.mainDiv{
+    display: flex;
+    justify-content: space-around;
+}

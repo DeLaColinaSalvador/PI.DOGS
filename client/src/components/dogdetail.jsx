@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react'
 import { useParams } from 'react-router';
 import { useEffect } from 'react';
-import s from '../styles/dog.module.css'
+import s from '../styles/dogdetail.module.css'
 
 export default function DogDetail(){
     const [dog,setDog] = useState(null);
@@ -29,17 +29,17 @@ export default function DogDetail(){
         fetchData()
     }, [] )
     console.log(dog)
-    return <div>
+    return <div className={s.mainDiv}>
         {
             dog ?
             <>
-            <h3>{dog.name}</h3>
+            <h3 className={s.name}>{dog.name}</h3>
             <img className={s.image} src={dog.image} alt='imagen'/>
-            <ul>
-                <li>Peso : {dog.weightMin}kg - {dog.weightMax}kg</li>
-                <li>Altura : {dog.heightMin}cm - {dog.heightMax}cm</li>
-                <li>Expectativa de vida : {dog.life_span}</li>
-                <li>Temperamento : {dog.temperaments}</li>
+            <ul className={s.ul}>
+                <li className={s.li}>Peso : {dog.weightMin}kg - {dog.weightMax}kg</li>
+                <li className={s.li}>Altura : {dog.heightMin}cm - {dog.heightMax}cm</li>
+                <li className={s.li}>Expectativa de vida : {dog.life_span}</li>
+                <li className={s.li}>Temperamento : {dog.temperaments}</li>
             </ul>
             </> :
             <div>loading</div>

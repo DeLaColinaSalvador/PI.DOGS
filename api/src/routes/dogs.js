@@ -26,7 +26,6 @@ router.get( ("/") , async (req,res,next) => {
                 }
             }
             })
-        console.log(DogPromiseDB)
     }
     else {
         DogPromiseDB =  await Dog.findAll({
@@ -34,7 +33,6 @@ router.get( ("/") , async (req,res,next) => {
                 model: Temperament
               }],
             })
-        console.log(DogPromiseDB)
         DogPromiseApi = axios.get('https://api.thedogapi.com/v1/breeds');
     }
     Promise.all([DogPromiseApi,DogPromiseDB])
@@ -47,7 +45,6 @@ router.get( ("/") , async (req,res,next) => {
             dog.dataValues.temperaments.map((prop) => {
                 temperaments.push(prop.name)
             })
-            console.log(temperaments)
             return {
                 id : dog.dataValues.id,
                 name : dog.dataValues.name,

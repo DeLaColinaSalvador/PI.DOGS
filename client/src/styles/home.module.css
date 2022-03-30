@@ -1,0 +1,19 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px;
+}
+
+.link{
+    border-radius: 5px;
+    border-style: inset;
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+
+.link:hover{
+    color: lightblue;
+}

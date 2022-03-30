@@ -3,6 +3,7 @@ import React, { useState , useEffect } from "react"
 import { useNavigate } from "react-router";
 import { useDispatch , useSelector } from "react-redux";
 import { FetchTemperaments } from "../store/actions";
+import s from '../styles/adddog.module.css'
 
 export default function AddDog () {
 
@@ -33,22 +34,25 @@ export default function AddDog () {
     }
 
     function onSubmit(e){
+        e.preventDefault();
         let errors = validate(newDog)
         console.log(errors)
         errors.forEach((err) => {
             alert(err)
         })
-        if (!errors){
+        if (errors.length == 0){
             try{
                 axios.post('http://localhost:3001/api/dog', newDog)
                 .then(() => {
-                alert('Perro creado')
-                navigate('/home')
+                    alert('Perro creado')
+                    navigate('/home')
                 })
             }
             catch(error){
                 alert(error)
             }
+        } else{
+            
         }
     }
 
@@ -64,11 +68,11 @@ export default function AddDog () {
             !dog.life_span ) {
             errors.push("Some inputs are empty")
         }
-        if (!nums.test(dog.weightMax) || !nums.test(dog.weightMin) || !nums.test(dog.life_span)) {
-            errors.push("Weight and lifespan have to be numbers")
+        if (!nums.test(dog.weightMax) || !nums.test(dog.weightMin)) {
+            errors.push("Min. and Max. weights have to be numbers")
         }
         if (!numsHeight.test(dog.heightMax) || !numsHeight.test(dog.heightMin)) {
-            errors.push("Height has to be a number")
+            errors.push("Min. and Max. Heights have to be numbers")
         }
         
         if (weightMinN > weightMaxN) {
@@ -95,23 +99,31 @@ export default function AddDog () {
         return <option key={obj.id}>{obj.name}</option>
     }
 
-    return <form onSubmit={onSubmit}>
-        <label htmlFor="">Nombre: </label>
-        <input onChange={onInputChange} name='name'type='text'/>
-        <label htmlFor="">Peso Mínimo: </label>
-        <input onChange={onInputChange} name='weightMin' type='text'/>
-        <label htmlFor="">Peso Máximo: </label>
-        <input onChange={onInputChange} name='weightMax' type='text'/>
-        <label htmlFor="">Alltura Mínima: </label>
-        <input onChange={onInputChange} name='heightMin' type='text'/>
-        <label htmlFor="">Altura Máxima: </label>
-        <input onChange={onInputChange} name='heightMax' type='text'/>
-        <label htmlFor="">Expectativa de vida: </label>
-        <input onChange={onInputChange} name='life_span' type='text'/>
+    return <form className={s.form} onSubmit={onSubmit}>
+        <label className={s.label} htmlFor="name">Nombre: </label>
+        <input className={s.input} id='name' onChange={onInputChange} name='name'/>
+        <br className={s.br}/>
+        <label className={s.label} htmlFor="weightMin">Peso Mínimo: </label>
+        <input className={s.input} id='weightMin' onChange={onInputChange} name='weightMin'/>
+        <br className={s.br}/>
+        <label className={s.label} htmlFor="weightMax">Peso Máximo: </label>
+        <input className={s.input} id='weightMax' onChange={onInputChange} name='weightMax'/>
+        <br className={s.br}/>
+        <label className={s.label} htmlFor="heightMin">Altura Mínima: </label>
+        <input className={s.input} id='heightMin' onChange={onInputChange} name='heightMin'/>
+        <br className={s.br}/>
+        <label className={s.label} htmlFor="heightMax">Altura Máxima: </label>
+        <input className={s.input} id='heightMax' onChange={onInputChange} name='heightMax'/>
+        <br className={s.br}/>
+        <label className={s.label} htmlFor="life_span">Expectativa de vida: </label>
+        <input className={s.input} id='life_span' onChange={onInputChange} name='life_span'/>
+        <br className={s.br}/>
+        <label className={s.label} htmlFor="temperament">Temperamento: </label>
         <select name="temperament" onChange={onSelectChange} multiple={true}>
                     {temperaments ? temperaments.map(makeOption) : <option>loading</option>}
         </select>
-        <input type='submit'/>
+        <br className={s.br}/>
+        <input className={s.submit} type='submit'/>
 
     </form>
 }

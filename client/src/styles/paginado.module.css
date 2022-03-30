@@ -1,0 +1,27 @@
+.paginado{
+    display: flex;
+    justify-content: space-around;
+    padding: 40px;
+    border-style: inset;
+    border-color: pink;
+    background-image: url('https://www.pngmagic.com/product_images/full-page-banner-background-hd-free-download.jpg');
+    background-size: cover;
+}
+
+.number{
+    border-style: inset;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 5px;
+    size: 40px;
+    list-style-type: none;
+    padding: 5px;
+    margin: 0px;
+    background-color: yellow;
+}
+
+.number:hover{
+    background-color: white;
+    color: red;
+    cursor: pointer;
+}

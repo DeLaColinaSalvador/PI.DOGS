@@ -1,0 +1,26 @@
+.mainDiv{
+    display: block;
+    width: 400px;
+    border-style: inset;
+    border-color: black;
+    border-radius: 20px;
+    margin: 30px;
+    background-image: url('https://i.pinimg.com/originals/db/64/d0/db64d058a37059774c3218315d377441.jpg');
+    background-size: 400px;
+}
+
+.li{
+    color: white;
+    text-shadow: color;
+    list-style-type: none;
+}
+
+.image{
+    height: 200px ;
+    width: auto;
+}
+
+.name{
+    color: white;
+}
+

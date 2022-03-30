@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ASCENDENTE, DESCENDENTE , W_ASCENDENTE , W_DESCENDENTE , ALL , EXISTENT , CREATED} from "../const/sort";
 import { SortName, SortWeight, fetchDogs } from "../store/actions";
+import s from '../styles/order.module.css'
 
 export default function Order (props){
     const dispatch = useDispatch();
@@ -59,21 +60,20 @@ export default function Order (props){
     let makeOption = function(obj){
         return <option key={obj.id}>{obj.name}</option>
     }
-    return  <div>
-                <select name='typeofDog' onChange={onSelectChangeD}>
+    return  <div className={s.mainDiv}>
+                <select className={s.select} name='typeofDog' onChange={onSelectChangeD}>
                     <option value={ALL}>Todos</option>
                     <option value={EXISTENT}>Existentes</option>
                     <option value={CREATED}>Creados</option>
                 </select>
                 <select name='selectN' onChange={onSelectChangeN}>
-                    <option value=''>Ordenar alfabeticamente</option>
                     <option value={DESCENDENTE}> ↓ Nombre </option>
                     <option value={ASCENDENTE}> ↑ Nombre </option>
                 </select>
                 <select name='selectW' onChange={onSelectChangeW}>
                     <option value=''>Ordenar por peso</option>
-                    <option value={W_DESCENDENTE}> ↓ Peso</option>    
-                    <option value={W_ASCENDENTE}> ↑ Peso</option>
+                    <option value={W_DESCENDENTE}> ↑ Peso</option>    
+                    <option value={W_ASCENDENTE}> ↓ Peso</option>
                 </select>
                 <select name="temperamentFilter" onChange={onSelectChangeT} multiple={true}>
                     {temperaments ? temperaments.map(makeOption) : <option>loading</option>}

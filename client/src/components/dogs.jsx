@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
 import Dog from './dog.jsx'
+import s from '../styles/dogs.module.css'
 
 export default function Dogs(props) {
     return( 
-        <div>
+        <div className={s.mainDiv}>
             {props.currentDogs.map((dog) => {
                 return(
-                        <Dog 
+                        <Dog className={s.dog}
                             key={dog.id}
                             id={dog.id} 
                             name={dog.name} 

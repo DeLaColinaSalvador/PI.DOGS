@@ -41,15 +41,19 @@ export default function reducer(state = initialState, action) {
                     return a
                 } else if ((typeof numberA==="number" && !Number.isNaN(numberA))|| Number.isNaN(numberB)){
                     numberB=numberA;
+                    a.weightMax=a.weightMin
                     a.avgW=Math.ceil((numberB+numberA)/2);
                     return a
                 } else if ((typeof numberB==="number" && !Number.isNaN(numberB))|| Number.isNaN(numberA)){
                     numberA=numberB;
+                    a.weightMin=a.weightMax
                     a.avgW=Math.ceil((numberB+numberA)/2);
                     return a
                 } else {
                     numberB = numberA = 0
-                    a.avgW=Math.ceil((numberB+numberA)/2)
+                    a.weightMax = 0
+                    a.weightMin = 0
+                    a.avgW= 0
                     return a
                 }
             })

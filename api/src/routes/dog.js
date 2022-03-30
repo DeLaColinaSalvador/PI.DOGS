@@ -13,6 +13,7 @@ router.post( "/" , async (req,res,next) => {
         const weight = req.body.weightMin + " - " + req.body.weightMax
         const height = req.body.heightMin + " - " + req.body.heightMax 
         const temperaments = req.body.temperament
+        console.log(req.body)
         const newBreed = await Dog.create({
             name,
             height,
@@ -26,9 +27,10 @@ router.post( "/" , async (req,res,next) => {
             });
             return await newBreed.addTemperament(temperamentDb)
         })
-        res.status(201).send(newBreed)
+            res.status(201).send(newBreed)
         }
         catch(error){
+            console.log(error)
             next(error)
         }
     })
